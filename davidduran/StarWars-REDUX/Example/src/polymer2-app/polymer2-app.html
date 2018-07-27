@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="polymer2-app">
+    <template>
+        <template is="dom-if" if="[[logged]]">
+            <h2>My application</h2>
+        </template>
+        <template is="dom-if" if="[[!logged]]">
+            <h2>Login form</h2>
+            <paper-button on-click="login">LogIn</paper-button>
+        </template>
+    </template>
+
+    <script>
+      /**
+       * @customElement
+       * @polymer
+       */
+      class Polymer2App extends ReduxMixin(Polymer.Element) {
+        static get is() {
+          return 'polymer2-app';
+        }
+
+        static get properties() {
+          return {
+            logged: {
+              type: Boolean,
+              statePath: 'isLogged'
+            }
+          };
+        }
+
+        connectedCallback() {
+          super.connectedCallback();
+          const state = this.getState();
+        }
+
+        login() {
+          this.dispatch(
+            {
+              type: 'CHANGE_LOGGED',
+              logged: true,
+            }
+          );
+        }
+      }
+
+      window.customElements.define(Polymer2App.is, Polymer2App);
+    </script>
+</dom-module>
